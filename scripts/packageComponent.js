@@ -57,9 +57,6 @@ const getDATFileVersionByComponentType = (componentType) => {
   switch (componentType) {
     case 'ethereum-remote-client':
       return '0'
-    case 'ad-block-updater':
-      return fs.readFileSync(path.join('node_modules', 'ad-block', 'data_file_version.h')).toString()
-        .match(/DATA_FILE_VERSION\s*=\s*(\d+)/)[1]
     case 'https-everywhere-updater':
       return '6.0'
     case 'local-data-files-updater':
@@ -81,9 +78,6 @@ const generateManifestFilesByComponentType = (componentType) => {
     case 'ethereum-remote-client':
       // Provides its own manifest file
       break
-    case 'ad-block-updater':
-      childProcess.execSync(`npm run --prefix ${path.join('node_modules', 'ad-block')} manifest-files`)
-      break
     case 'https-everywhere-updater':
     case 'local-data-files-updater':
       // TODO(emerick): Make these work like ad-block (i.e., update
@@ -102,8 +96,6 @@ const getManifestsDirByComponentType = (componentType) => {
   switch (componentType) {
     case 'ethereum-remote-client':
       return path.join('node_modules', 'ethereum-remote-client')
-    case 'ad-block-updater':
-      return path.join('node_modules', 'ad-block', 'out')
     case 'https-everywhere-updater':
     case 'local-data-files-updater':
       // TODO(emerick): Make these work like ad-block
@@ -118,8 +110,6 @@ const getManifestsDirByComponentType = (componentType) => {
 const getNormalizedDATFileName = (datFileName) =>
   datFileName === 'ABPFilterParserData' ||
   datFileName === 'httpse.leveldb' ||
-  datFileName === 'TrackingProtection' ||
-  datFileName === 'StorageTrackingProtection' ||
   datFileName === 'ReferrerWhitelist' ||
   datFileName === 'ExtensionWhitelist' ||
   datFileName === 'Greaselion' ||
@@ -132,24 +122,13 @@ const getDATFileListByComponentType = (componentType) => {
   switch (componentType) {
     case 'ethereum-remote-client':
       return ['']
-    case 'ad-block-updater':
-      return fs.readdirSync(path.join('node_modules', 'ad-block', 'out'))
-        .filter(file => {
-          return (path.extname(file) === '.dat' && file !== 'SafeBrowsingData.dat')
-        })
-        .reduce((acc, val) => {
-          acc.push(path.join('node_modules', 'ad-block', 'out', val))
-          return acc
-        }, [])
     case 'https-everywhere-updater':
       return path.join('node_modules', 'https-everywhere-builder', 'out', 'httpse.leveldb.zip').split()
     case 'local-data-files-updater':
       return [path.join('node_modules', 'autoplay-whitelist', 'data', 'AutoplayWhitelist.dat'),
         path.join('node_modules', 'extension-whitelist', 'data', 'ExtensionWhitelist.dat'),
         path.join('node_modules', 'brave-site-specific-scripts', 'Greaselion.json'),
-        path.join('node_modules', 'referrer-whitelist', 'data', 'ReferrerWhitelist.json'),
-        path.join('node_modules', 'tracking-protection', 'data', 'TrackingProtection.dat'),
-        path.join('node_modules', 'tracking-protection', 'data', 'StorageTrackingProtection.dat')]
+        path.join('node_modules', 'referrer-whitelist', 'data', 'ReferrerWhitelist.json')]
     case 'speedreader-updater':
       return path.join('node_modules', 'speedreader', 'data', 'speedreader-updater.dat').split()
     default:
@@ -180,7 +159,7 @@ commander
   .option('-b, --binary <binary>', 'Path to the Chromium based executable to use to generate the CRX file')
   .option('-d, --keys-directory <dir>', 'directory containing private keys for signing crx files')
   .option('-f, --key-file <file>', 'private key file for signing crx', 'key.pem')
-  .option('-t, --type <type>', 'component extension type', /^(ad-block-updater|https-everywhere-updater|local-data-files-updater|ethereum-remote-client|speedreader-updater)$/i, 'ad-block-updater')
+  .option('-t, --type <type>', 'component extension type', /^(https-everywhere-updater|local-data-files-updater|ethereum-remote-client|speedreader-updater)$/i)
   .option('-e, --endpoint <endpoint>', 'DynamoDB endpoint to connect to', '')// If setup locally, use http://localhost:8000
   .option('-r, --region <region>', 'The AWS region to use', 'us-east-2')
   .parse(process.argv)

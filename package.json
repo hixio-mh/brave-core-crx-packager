@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "Packages component and theme extensions used in the Brave browser",
   "dependencies": {
-    "ad-block": "brave/ad-block",
     "adblock-rs": "^0.2.9",
     "ajv": "^6.10.0",
     "autoplay-whitelist": "github:brave/autoplay-whitelist",
@@ -17,7 +16,6 @@
     "s3-client": "^4.4.2",
     "s3-node-client": "^4.4.4",
     "speedreader": "github:brave-experiments/SpeedReader",
-    "tracking-protection": "brave/tracking-protection",
     "unzip-crx-3": "^0.2.0"
   },
   "devDependencies": {
@@ -35,7 +33,6 @@
     "clean": "rimraf build/",
     "test": "tap test/*.js",
     "data-files-ad-block-rust": "node scripts/generateAdBlockRustDataFiles.js",
-    "data-files-ad-block": "npm run --prefix ./node_modules/ad-block data-files",
     "data-files-https-everywhere": "npm run --prefix ./node_modules/https-everywhere-builder build",
     "data-files-tracking-protection": "cd ./node_modules/tracking-protection/scripts && node ./genDataFile",
     "data-files-autoplay-whitelist": "npm run --prefix ./node_modules/autoplay-whitelist data-files",
@@ -61,7 +58,6 @@
     "upload-ethereum-remote-client": "node ./scripts/uploadComponent --type ethereum-remote-client",
     "package-parameter-updates": "node ./scripts/packageClientModelParameterComponent",
     "upload-ad-block": "node ./scripts/uploadComponent --type ad-block-updater",
-    "upload-ad-block-raw": "node ./scripts/uploadRawAdblock",
     "upload-https-everywhere": "node ./scripts/uploadComponent --type https-everywhere-updater",
     "upload-ipfs-daemon": "node ./scripts/uploadIpfsDaemon",
     "upload-tor-client": "node ./scripts/uploadComponent --type tor-client-updater",
