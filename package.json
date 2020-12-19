@@ -5,7 +5,7 @@
   "dependencies": {
     "ad-block": "brave/ad-block",
     "adblock-rs": "^0.2.9",
-    "ajv": "^6.10.0",
+    "ajv": "^6.12.6",
     "autoplay-whitelist": "github:brave/autoplay-whitelist",
     "aws-sdk": "^2.449.0",
     "brave-site-specific-scripts": "github:brave/brave-site-specific-scripts",
